@@ -1,0 +1,17 @@
+{% extends "apply/base.html" %}
+{% block body_block %}<div class="container">
+  <div class="jumbotron">
+    <h1>Sholarship application form</h1>
+    {% if user.is_authenticated %}
+        <h2>Hello {{ user.username }}</h2>
+        <h1>BIO DATA</h1>
+        <h3>Just fill out the form.</h3><form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ user_form.as_p }}
+          {{ profile_form.as_p }}
+          </form>
+ 
+   
+    {% endif %}
+  </div>
+</div>{% endblock %}
