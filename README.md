@@ -1,2 +1,2 @@
 # Django_application
-dd
+scholarship application system
