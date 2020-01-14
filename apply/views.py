@@ -1,12 +1,31 @@
-from django.shortcuts import render
-from apply.forms import UserForm,UserProfileInfoForm,IndexForm
+from django.shortcuts import render, redirect
+from apply.forms import UserForm,UserProfileInfoForm,ScholarshipApplicationForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
-    return render(request,'apply/index.html')
+    application_form = ScholarshipApplicationForm()
+    if request.method == 'POST':
+        application_form = ScholarshipApplicationForm(data=request.POST)
+        if application_form.is_valid():
+            application_form.save()
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            application_form = ScholarshipApplicationForm()
+    return render(request,'apply/index.html', {'form':application_form})
+
+def app(request):
+    application_form = ScholarshipApplicationForm()
+    if request.method == 'POST':
+        application_form = ScholarshipApplicationForm(data=request.POST)
+        if application_form.is_valid():
+            application_form.save()
+            return redirect('register')
+        else:
+            application_form = ScholarshipApplicationForm()
+    return render(request,'apply/index.html', {'form':application_form})
 @login_required
 def special(request):
     return HttpResponse("You are logged in !")
@@ -39,6 +58,7 @@ def register(request):
                           {'user_form':user_form,
                            'profile_form':profile_form,
                            'registered':registered})
+
                            
 def user_login(request):
     if request.method == 'POST':
