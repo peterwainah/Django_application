@@ -1,31 +1,48 @@
 from django.shortcuts import render, redirect
-from apply.forms import UserForm,UserProfileInfoForm,ScholarshipApplicationForm
+from apply.forms import UserForm,UserProfileInfoForm,ScholarshipApplicationForm ,SchoolInformationForm ,JustInformationForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
+    return render(request,'apply/index.html',)
+def bio(request):
     application_form = ScholarshipApplicationForm()
     if request.method == 'POST':
         application_form = ScholarshipApplicationForm(data=request.POST)
         if application_form.is_valid():
             application_form.save()
-            return HttpResponseRedirect(reverse('index'))
+            return redirect('apply:app')
         else:
             application_form = ScholarshipApplicationForm()
-    return render(request,'apply/index.html', {'form':application_form})
-
+    return render(request,'apply/bio.html', {'form':application_form})
 def app(request):
-    application_form = ScholarshipApplicationForm()
+    information_form = SchoolInformationForm()
     if request.method == 'POST':
-        application_form = ScholarshipApplicationForm(data=request.POST)
-        if application_form.is_valid():
-            application_form.save()
-            return redirect('register')
+        information_form = SchoolInformationForm(data=request.POST)
+        if information_form.is_valid():
+            information_form.save()
+            return redirect('apply:just')
         else:
-            application_form = ScholarshipApplicationForm()
-    return render(request,'apply/index.html', {'form':application_form})
+            information_form =SchoolInformationForm()
+    return render(request,'apply/app.html', {'form':information_form})
+def just(request):
+    last_form = JustInformationForm()
+    if request.method == 'POST':
+        last_form = JustInformationForm(data=request.POST)
+        if last_form.is_valid():
+            last_form.save()
+            return redirect('apply:base')
+        else:
+            last_form =JustInformationForm()
+    return render(request,'apply/just.html', {'form':last_form})
+def base(request):
+    
+    return render(request,'apply/end.html',)
+    
+
+
 @login_required
 def special(request):
     return HttpResponse("You are logged in !")
@@ -68,9 +85,11 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect(reverse('index'))
+               # return HttpResponseRedirect(reverse('bio'))
+                return redirect('apply:bio')
             else:
                 return HttpResponse("Your account was inactive.")
+                
         else:
             print("Someone tried to login and failed.")
             print("They used username: {} and password:{}".format(username,password))

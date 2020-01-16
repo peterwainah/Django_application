@@ -10,6 +10,10 @@ app_name = 'apply'
 urlpatterns=[
     url(r'^register/$',views.register,name='register'),
     url(r'^app/$',views.app,name='app'),
+    url(r'^just/$',views.just,name='just'),
     url(r'^user_login/$',views.user_login,name='user_login'),
+    url(r'^user_login/$',views.user_login,name='user_login'),
+    url(r'^base/$',views.base,name='base'),
+    url(r'^bio/$',views.bio,name='bio'),
     
 ]

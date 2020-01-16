@@ -2,6 +2,7 @@
 {% block body_block %}<div class="container">
   <div class="jumbotron">
     <h1>Scholarship application !</h1>
+   
     {% if user.is_authenticated %}
         <h2>Hello {{ user.username }}</h2>
         {% if message %}
@@ -13,7 +14,7 @@
             {{ form.as_p }}
             {{ profile_form.as_p }}
             <br><br><br><br>
-            <input type="submit" name="" value="Register">
+            <input type="submit" name="" value="Next">
           </form>
         {% endif %}
     {% else %}

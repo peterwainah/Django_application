@@ -1,5 +1,5 @@
 from django import forms
-from apply.models import UserProfileInfo, ScholarshipApplication, SchoolInformation
+from apply.models import UserProfileInfo, ScholarshipApplication, SchoolInformation , JustInformation
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -53,3 +53,9 @@ class SchoolInformationForm(forms.ModelForm):
     
         # return any errors if found 
         return self.cleaned_data 
+class JustInformationForm(forms.ModelForm):
+    class Meta:
+        model = JustInformation
+        fields = '__all__'
+
+    
